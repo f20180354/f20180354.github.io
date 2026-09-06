@@ -816,7 +816,7 @@
     }
   </style>
 </head>
-<body>
+<body class="dark">
   <div id="ambientColor" aria-hidden="true">
     <span class="ambient-orb orb-orange"></span>
     <span class="ambient-orb orb-blue"></span>
@@ -849,7 +849,7 @@
       <div>
                 <h1>Omatharv<br><span class="name-accent">Vaidya</span></h1>
         <p class="hero-intro">I am a fourth-year Computer Science Ph.D. student at UT Austin. I study optimization and efficient learning methods for large models, with current work on Mixture-of-Experts training, low-rank adaptation, and reasoning systems.</p>
-        <p class="hero-advisors">I am advised by <a href="https://nhatptnk8912.github.io/" target="_blank" rel="noreferrer">Dr. Nhat Ho</a> and <a href="https://leqiliu.github.io/" target="_blank" rel="noreferrer">Dr. Leqi Liu</a>.</p>
+        <p class="hero-advisors">I am advised by <a href="https://nhatptnk8912.github.io/" target="_blank" rel="noreferrer">Dr. Nhat Ho</a>.</p>
         <p class="hero-note">A recurring theme in my work is to use structure already present in the model or task to guide learning and inference.</p>
         <div class="hero-actions">
           <a class="pill primary" href="#research">Research ↓</a>
@@ -1310,11 +1310,13 @@
     const body = document.body;
     const themeToggle = document.getElementById('themeToggle');
     let saved = null;
-    try { saved = localStorage.getItem('ov-theme'); } catch (_) {}
-    if (saved === 'dark') body.classList.add('dark');
+    try { saved = localStorage.getItem('ov-theme-v2'); } catch (_) {}
+    // Dark is the default for this site. A visitor's explicit choice is preserved after the first visit.
+    if (saved === 'light') body.classList.remove('dark');
+    else body.classList.add('dark');
     themeToggle.addEventListener('click', () => {
       body.classList.toggle('dark');
-      try { localStorage.setItem('ov-theme', body.classList.contains('dark') ? 'dark' : 'light'); } catch (_) {}
+      try { localStorage.setItem('ov-theme-v2', body.classList.contains('dark') ? 'dark' : 'light'); } catch (_) {}
     });
 
     const progress = document.getElementById('progress');

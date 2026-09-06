@@ -741,6 +741,15 @@
     .contact p { color: var(--muted); max-width: 620px; }
     .contact-links { display: grid; gap: 9px; }
     .contact-links .pill { justify-content: space-between; }
+    .contact-links button.pill {
+      width: 100%;
+      color: var(--ink);
+      font: inherit;
+      text-align: left;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    body.dark .contact-links button.pill { color: var(--ink); }
 
     footer {
       width: min(calc(100% - 38px), var(--max));

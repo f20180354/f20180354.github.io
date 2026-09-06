@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Omatharv Vaidya — Computer Science Ph.D. student at The University of Texas at Austin working on optimization and efficient machine learning." />
-  <title>Omatharv Vaidya — Research</title>
+  <title>Omatharv</title>
+  <meta name="theme-color" content="#0f1117" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%0A%20%20%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23111317%22/%3E%0A%20%20%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2224%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%23d46b08%22%20stroke-width%3D%222.5%22/%3E%0A%20%20%3Ctext%20x%3D%2232%22%20y%3D%2239%22%20text-anchor%3D%22middle%22%20font-size%3D%2228%22%20font-family%3D%22Georgia%2C%20Times%20New%20Roman%2C%20serif%22%20fill%3D%22%23111317%22%3E%E2%99%9E%3C/text%3E%0A%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%0A%20%20%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23111317%22/%3E%0A%20%20%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2224%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%23d46b08%22%20stroke-width%3D%222.5%22/%3E%0A%20%20%3Ctext%20x%3D%2232%22%20y%3D%2239%22%20text-anchor%3D%22middle%22%20font-size%3D%2228%22%20font-family%3D%22Georgia%2C%20Times%20New%20Roman%2C%20serif%22%20fill%3D%22%23111317%22%3E%E2%99%9E%3C/text%3E%0A%3C/svg%3E" />
   <style>
     :root {
       --paper: #f7f3ea;
@@ -139,19 +142,21 @@
 
     .hero {
       position: relative;
-      padding-bottom: 126px;
+      padding-bottom: 72px;
+      column-gap: 64px;
+      row-gap: 30px;
     }
     .research-typing {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 28px;
+      position: relative;
+      grid-column: 1 / -1;
+      width: 100%;
       z-index: 3;
       display: grid;
       grid-template-columns: 145px minmax(0, 1fr);
       gap: 22px;
       align-items: baseline;
-      padding: 16px 0 0;
+      margin-top: 4px;
+      padding: 20px 0 0;
       border-top: 1px solid color-mix(in srgb, var(--hair-strong) 75%, transparent);
       pointer-events: none;
     }
@@ -181,8 +186,8 @@
     @keyframes cursorBlink { 50% { opacity: 0; } }
 
     @media (max-width: 760px) {
-      .hero { padding-bottom: 148px; }
-      .research-typing { grid-template-columns: 1fr; gap: 7px; bottom: 24px; }
+      .hero { padding-bottom: 72px; row-gap: 26px; }
+      .research-typing { grid-template-columns: 1fr; gap: 7px; margin-top: 0; padding-top: 17px; }
       .typing-line { font-size: 1.03rem; min-height: 3.2em; }
       .ambient-orb { width: 650px; opacity: .14; }
       body.dark .ambient-orb { opacity: .20; }
@@ -235,23 +240,48 @@
     }
 
     .brand-mark {
-      width: 30px;
-      height: 30px;
+      width: 40px;
+      height: 40px;
       position: relative;
       border: 1px solid var(--hair-strong);
       border-radius: 50%;
-      background: var(--surface-strong);
+      background: radial-gradient(circle at 30% 28%, color-mix(in srgb, var(--surface-strong) 90%, white 10%), var(--surface));
       overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.55rem;
+      line-height: 1;
+      color: color-mix(in srgb, var(--ink) 86%, var(--orange) 14%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 6px 18px rgba(12,12,12,.08);
     }
     .brand-mark::before,
     .brand-mark::after {
       content: "";
       position: absolute;
       border-radius: 999px;
-      transform: rotate(-32deg);
+      pointer-events: none;
     }
-    .brand-mark::before { width: 26px; height: 2px; background: var(--orange); top: 10px; left: 2px; }
-    .brand-mark::after { width: 20px; height: 2px; background: var(--green); top: 17px; left: 6px; }
+    .brand-mark::before {
+      width: 25px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), color-mix(in srgb, var(--orange) 30%, transparent));
+      bottom: 9px;
+      left: 8px;
+      transform: rotate(-26deg);
+      opacity: .9;
+    }
+    .brand-mark::after {
+      width: 13px;
+      height: 13px;
+      border: 1px solid color-mix(in srgb, var(--green) 72%, transparent);
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+      top: 5px;
+      right: 6px;
+      transform: rotate(6deg);
+      opacity: .85;
+    }
 
     .nav-links { display: flex; gap: 2px; align-items: center; }
     .nav-links a,
@@ -798,7 +828,7 @@
 
   <div class="nav-wrap">
     <nav aria-label="Primary">
-      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span><span>Omatharv Vaidya</span></a>
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">♞</span><span>Omatharv Vaidya</span></a>
       <div class="nav-links">
         <a href="#research">Research</a>
         <a href="#publications">Publications</a>
@@ -817,8 +847,7 @@
   <main id="top">
     <section class="hero">
       <div>
-        <div class="eyebrow">Computer Science Ph.D. · UT Austin</div>
-        <h1>Omatharv<br><span class="name-accent">Vaidya</span></h1>
+                <h1>Omatharv<br><span class="name-accent">Vaidya</span></h1>
         <p class="hero-intro">I am a fourth-year Computer Science Ph.D. student at UT Austin. I study optimization and efficient learning methods for large models, with current work on Mixture-of-Experts training, low-rank adaptation, and reasoning systems.</p>
         <p class="hero-advisors">I am advised by <a href="https://nhatptnk8912.github.io/" target="_blank" rel="noreferrer">Dr. Nhat Ho</a> and <a href="https://leqiliu.github.io/" target="_blank" rel="noreferrer">Dr. Leqi Liu</a>.</p>
         <p class="hero-note">A recurring theme in my work is to use structure already present in the model or task to guide learning and inference.</p>

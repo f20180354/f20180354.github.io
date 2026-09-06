@@ -6,8 +6,8 @@
   <meta name="description" content="Omatharv Vaidya — Computer Science Ph.D. student at The University of Texas at Austin working on optimization and efficient machine learning." />
   <title>Omatharv</title>
   <meta name="theme-color" content="#0f1117" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%0A%20%20%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23111317%22/%3E%0A%20%20%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2224%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%23d46b08%22%20stroke-width%3D%222.5%22/%3E%0A%20%20%3Ctext%20x%3D%2232%22%20y%3D%2239%22%20text-anchor%3D%22middle%22%20font-size%3D%2228%22%20font-family%3D%22Georgia%2C%20Times%20New%20Roman%2C%20serif%22%20fill%3D%22%23111317%22%3E%E2%99%9E%3C/text%3E%0A%3C/svg%3E" />
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%0A%20%20%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23111317%22/%3E%0A%20%20%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2224%22%20fill%3D%22%23f4efe6%22%20stroke%3D%22%23d46b08%22%20stroke-width%3D%222.5%22/%3E%0A%20%20%3Ctext%20x%3D%2232%22%20y%3D%2239%22%20text-anchor%3D%22middle%22%20font-size%3D%2228%22%20font-family%3D%22Georgia%2C%20Times%20New%20Roman%2C%20serif%22%20fill%3D%22%23111317%22%3E%E2%99%9E%3C/text%3E%0A%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=3" />
+  <link rel="apple-touch-icon" href="favicon.svg?v=3" />
   <style>
     :root {
       --paper: #f7f3ea;
@@ -242,45 +242,15 @@
     .brand-mark {
       width: 40px;
       height: 40px;
-      position: relative;
-      border: 1px solid var(--hair-strong);
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 28%, color-mix(in srgb, var(--surface-strong) 90%, white 10%), var(--surface));
-      overflow: hidden;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.55rem;
-      line-height: 1;
-      color: color-mix(in srgb, var(--ink) 86%, var(--orange) 14%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 6px 18px rgba(12,12,12,.08);
+      flex: 0 0 40px;
     }
-    .brand-mark::before,
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      pointer-events: none;
-    }
-    .brand-mark::before {
-      width: 25px;
-      height: 3px;
-      background: linear-gradient(90deg, var(--orange), color-mix(in srgb, var(--orange) 30%, transparent));
-      bottom: 9px;
-      left: 8px;
-      transform: rotate(-26deg);
-      opacity: .9;
-    }
-    .brand-mark::after {
-      width: 13px;
-      height: 13px;
-      border: 1px solid color-mix(in srgb, var(--green) 72%, transparent);
-      border-left-color: transparent;
-      border-bottom-color: transparent;
-      top: 5px;
-      right: 6px;
-      transform: rotate(6deg);
-      opacity: .85;
+    .brand-mark img {
+      width: 40px;
+      height: 40px;
+      display: block;
     }
 
     .nav-links { display: flex; gap: 2px; align-items: center; }
@@ -723,6 +693,8 @@
     .edu-top { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline; }
     .edu-item h3, .award-item h3 { font-family: Georgia, "Times New Roman", serif; font-size: 1.28rem; font-weight: 520; letter-spacing: -.02em; margin-bottom: 4px; }
     .school { color: var(--orange); font-size: .90rem; }
+    .school a { color: inherit; text-decoration: none; }
+    .school a:hover { opacity: .88; }
     .edu-date { color: var(--muted); font-size: .80rem; white-space: nowrap; }
     .edu-detail { color: var(--muted); margin-top: 13px; font-size: .90rem; max-width: 760px; }
     .course-label { color: var(--ink); font-weight: 650; }
@@ -837,7 +809,7 @@
 
   <div class="nav-wrap">
     <nav aria-label="Primary">
-      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">♞</span><span>Omatharv Vaidya</span></a>
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><img src="favicon.svg?v=3" alt="" /></span><span>Omatharv Vaidya</span></a>
       <div class="nav-links">
         <a href="#research">Research</a>
         <a href="#publications">Publications</a>
@@ -1244,14 +1216,14 @@
           <div class="section-kicker">Education</div>
           <h2>Computer science and mathematics.</h2>
         </div>
-        <p class="section-copy">My doctoral work is in computer science at UT Austin. My undergraduate education combined computer science and mathematics at BITS Pilani.</p>
+        <p class="section-copy">My doctoral work is in computer science at UT Austin. My undergraduate education combined computer science and mathematics at BITS Pilani K.K. Birla Goa Campus.</p>
       </div>
 
       <div class="education-wrap">
         <div class="education-list">
           <article class="edu-item">
             <div class="edu-top">
-              <div><h3>Ph.D. in Computer Science</h3><div class="school">The University of Texas at Austin</div></div>
+              <div><h3>Ph.D. in Computer Science</h3><div class="school"><a href="https://www.utexas.edu/" target="_blank" rel="noreferrer">The University of Texas at Austin</a></div></div>
               <div class="edu-date">2023 — present</div>
             </div>
             <div class="edu-detail">
@@ -1263,7 +1235,7 @@
 
           <article class="edu-item">
             <div class="edu-top">
-              <div><h3>M.S. in Mathematics</h3><div class="school">BITS Pilani</div></div>
+              <div><h3>MSc. Mathematics</h3><div class="school"><a href="https://www.bits-pilani.ac.in/goa/" target="_blank" rel="noreferrer">BITS Pilani K.K. Birla Goa Campus</a></div></div>
               <div class="edu-date">2018 — 2023</div>
             </div>
             <div class="edu-detail">
@@ -1274,7 +1246,7 @@
 
           <article class="edu-item">
             <div class="edu-top">
-              <div><h3>B.E. in Computer Science</h3><div class="school">BITS Pilani</div></div>
+              <div><h3>B.E. in Computer Science</h3><div class="school"><a href="https://www.bits-pilani.ac.in/goa/" target="_blank" rel="noreferrer">BITS Pilani K.K. Birla Goa Campus</a></div></div>
               <div class="edu-date">2018 — 2023</div>
             </div>
             <div class="edu-detail">

@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Omatharv Vaidya — Computer Science Ph.D. student at The University of Texas at Austin working on optimization and efficient machine learning." />
+  <title>Omatharv Vaidya — Research</title>
+  <style>
+    :root {
+      --paper: #f7f3ea;
+      --paper-2: #efe9dd;
+      --ink: #151617;
+      --muted: #676861;
+      --hair: rgba(21,22,23,.16);
+      --hair-strong: rgba(21,22,23,.28);
+      --orange: #bf5700;
+      --orange-soft: #f3dfce;
+      --blue: #315db6;
+      --blue-soft: #dce7f8;
+      --green: #168467;
+      --green-soft: #d8eee7;
+      --red: #b24c3e;
+      --red-soft: #f2ded9;
+      --surface: rgba(255,255,255,.58);
+      --surface-strong: #fffdf8;
+      --max: 1200px;
+      --radius: 24px;
+      --shadow: 0 22px 70px rgba(39,32,20,.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(21,22,23,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(21,22,23,.028) 1px, transparent 1px),
+        radial-gradient(circle at 10% 0%, rgba(191,87,0,.08), transparent 27%),
+        radial-gradient(circle at 92% 8%, rgba(49,93,182,.07), transparent 28%),
+        var(--paper);
+      background-size: 36px 36px, 36px 36px, auto, auto, auto;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body.dark {
+      --paper: #10110f;
+      --paper-2: #171713;
+      --ink: #f2eee5;
+      --muted: #b2afa5;
+      --hair: rgba(255,255,255,.12);
+      --hair-strong: rgba(255,255,255,.22);
+      --orange-soft: rgba(191,87,0,.18);
+      --blue-soft: rgba(49,93,182,.20);
+      --green-soft: rgba(22,132,103,.19);
+      --red-soft: rgba(178,76,62,.20);
+      --surface: rgba(25,25,21,.68);
+      --surface-strong: #171713;
+      --shadow: 0 24px 80px rgba(0,0,0,.3);
+      background:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+        radial-gradient(circle at 10% 0%, rgba(191,87,0,.13), transparent 27%),
+        radial-gradient(circle at 92% 8%, rgba(49,93,182,.12), transparent 28%),
+        var(--paper);
+      background-size: 36px 36px, 36px 36px, auto, auto, auto;
+    }
+
+
+
+    #ambientBg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .82;
+    }
+    .nav-wrap, main, footer { position: relative; z-index: 1; }
+
+
+    /* Research-specific ambient system: moving color basins, optimization paths,
+       low-rank atoms, MoE routes, and a rotating orthogonal compass. */
+    #ambientColor {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .82;
+    }
+    .ambient-orb {
+      position: absolute;
+      width: clamp(360px, 48vw, 760px);
+      aspect-ratio: 1;
+      border-radius: 48% 52% 44% 56% / 56% 43% 57% 44%;
+      filter: blur(78px);
+      opacity: .19;
+      will-change: transform;
+      transform: translate3d(0,0,0);
+    }
+    .orb-orange {
+      left: -17vw; top: -20vh;
+      background: radial-gradient(circle at 58% 48%, rgba(191,87,0,.72), rgba(191,87,0,.24) 38%, transparent 70%);
+      animation: orbDriftA 21s ease-in-out infinite alternate;
+    }
+    .orb-blue {
+      right: -19vw; top: 6vh;
+      background: radial-gradient(circle at 42% 52%, rgba(49,93,182,.62), rgba(49,93,182,.18) 40%, transparent 72%);
+      animation: orbDriftB 27s ease-in-out infinite alternate;
+    }
+    .orb-green {
+      left: 12vw; bottom: -30vh;
+      background: radial-gradient(circle at 52% 46%, rgba(22,132,103,.52), rgba(22,132,103,.15) 42%, transparent 72%);
+      animation: orbDriftC 31s ease-in-out infinite alternate;
+    }
+    .orb-red {
+      right: 8vw; bottom: -34vh;
+      background: radial-gradient(circle at 48% 44%, rgba(178,76,62,.42), rgba(178,76,62,.10) 44%, transparent 72%);
+      animation: orbDriftD 24s ease-in-out infinite alternate;
+    }
+    body.dark #ambientColor { opacity: 1; }
+    body.dark .ambient-orb { opacity: .29; filter: blur(92px); mix-blend-mode: screen; }
+    @keyframes orbDriftA { to { transform: translate3d(17vw, 15vh, 0) rotate(22deg) scale(1.13); } }
+    @keyframes orbDriftB { to { transform: translate3d(-18vw, 20vh, 0) rotate(-20deg) scale(.92); } }
+    @keyframes orbDriftC { to { transform: translate3d(16vw, -24vh, 0) rotate(18deg) scale(1.10); } }
+    @keyframes orbDriftD { to { transform: translate3d(-13vw, -17vh, 0) rotate(-16deg) scale(1.08); } }
+
+    #ambientBg {
+      opacity: 1;
+      mix-blend-mode: multiply;
+    }
+    body.dark #ambientBg { mix-blend-mode: screen; }
+    .nav-wrap, main, footer { position: relative; z-index: 2; }
+
+    .hero {
+      position: relative;
+      padding-bottom: 126px;
+    }
+    .research-typing {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 28px;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: 145px minmax(0, 1fr);
+      gap: 22px;
+      align-items: baseline;
+      padding: 16px 0 0;
+      border-top: 1px solid color-mix(in srgb, var(--hair-strong) 75%, transparent);
+      pointer-events: none;
+    }
+    .typing-label {
+      color: var(--orange);
+      font: 650 .70rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .typing-line {
+      min-height: 2.2em;
+      color: color-mix(in srgb, var(--ink) 82%, var(--muted));
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.48rem);
+      line-height: 1.45;
+      letter-spacing: -.018em;
+    }
+    .typing-cursor {
+      display: inline-block;
+      width: 1px;
+      height: 1.05em;
+      margin-left: 4px;
+      transform: translateY(.16em);
+      background: var(--orange);
+      animation: cursorBlink .78s steps(1,end) infinite;
+    }
+    @keyframes cursorBlink { 50% { opacity: 0; } }
+
+    @media (max-width: 760px) {
+      .hero { padding-bottom: 148px; }
+      .research-typing { grid-template-columns: 1fr; gap: 7px; bottom: 24px; }
+      .typing-line { font-size: 1.03rem; min-height: 3.2em; }
+      .ambient-orb { width: 650px; opacity: .14; }
+      body.dark .ambient-orb { opacity: .20; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ambient-orb, .typing-cursor { animation: none !important; }
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    .progress {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 2px;
+      z-index: 100;
+      background: linear-gradient(90deg, var(--orange), var(--green), var(--blue));
+      transform-origin: left center;
+      transform: scaleX(0);
+    }
+
+    .nav-wrap {
+      position: sticky;
+      top: 14px;
+      z-index: 50;
+      width: min(calc(100% - 28px), 1250px);
+      margin: 14px auto 0;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 10px 12px 10px 16px;
+      border: 1px solid var(--hair);
+      background: color-mix(in srgb, var(--surface-strong) 82%, transparent);
+      backdrop-filter: blur(18px);
+      border-radius: 999px;
+      box-shadow: 0 8px 32px rgba(25,24,18,.06);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 720;
+      letter-spacing: -.025em;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      position: relative;
+      border: 1px solid var(--hair-strong);
+      border-radius: 50%;
+      background: var(--surface-strong);
+      overflow: hidden;
+    }
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      transform: rotate(-32deg);
+    }
+    .brand-mark::before { width: 26px; height: 2px; background: var(--orange); top: 10px; left: 2px; }
+    .brand-mark::after { width: 20px; height: 2px; background: var(--green); top: 17px; left: 6px; }
+
+    .nav-links { display: flex; gap: 2px; align-items: center; }
+    .nav-links a,
+    .icon-btn {
+      padding: 8px 11px;
+      border-radius: 999px;
+      color: var(--muted);
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      transition: 170ms ease;
+    }
+    .nav-links a:hover,
+    .icon-btn:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
+    .nav-actions { display: flex; align-items: center; gap: 6px; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border: 1px solid var(--hair);
+      border-radius: 999px;
+      background: var(--surface-strong);
+      transition: 180ms ease;
+    }
+    .pill:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(30,25,16,.08); }
+    .pill.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+    main { width: min(calc(100% - 38px), var(--max)); margin: 0 auto; }
+    section { padding: 102px 0; scroll-margin-top: 100px; }
+
+    .hero {
+      min-height: 790px;
+      display: grid;
+      grid-template-columns: .90fr 1.10fr;
+      gap: 64px;
+      align-items: center;
+      padding-top: 92px;
+      padding-bottom: 78px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      color: var(--muted);
+      font-size: .84rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-weight: 680;
+    }
+    .eyebrow::before { content: ""; width: 32px; height: 1px; background: var(--orange); }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 26px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(4.4rem, 8vw, 7.9rem);
+      line-height: .84;
+      letter-spacing: -.07em;
+      font-weight: 520;
+    }
+    .name-accent { color: var(--orange); }
+
+    .hero-intro {
+      max-width: 650px;
+      font-size: clamp(1.13rem, 2vw, 1.43rem);
+      line-height: 1.55;
+      letter-spacing: -.02em;
+      color: var(--muted);
+    }
+    .hero-advisors {
+      max-width: 650px;
+      margin: -8px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.13rem, 2vw, 1.43rem);
+      line-height: 1.55;
+      letter-spacing: -.02em;
+    }
+    .hero-advisors a {
+      color: var(--ink);
+      text-decoration: underline;
+      text-decoration-color: color-mix(in srgb, var(--orange) 50%, transparent);
+      text-underline-offset: 4px;
+      transition: color 150ms ease, text-decoration-color 150ms ease;
+    }
+    .hero-advisors a:hover { color: var(--orange); text-decoration-color: var(--orange); }
+    .hero-note {
+      max-width: 610px;
+      margin-top: 22px;
+      padding-left: 18px;
+      border-left: 2px solid var(--orange);
+      color: var(--ink);
+      font-size: .97rem;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+
+    .hero-visual { position: relative; min-height: 620px; display: grid; place-items: center; }
+    #field { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .55; }
+
+    .research-instrument {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 650px);
+      min-height: 610px;
+      border: 1px solid var(--hair-strong);
+      border-radius: 34px;
+      background: color-mix(in srgb, var(--surface-strong) 88%, transparent);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+    .research-instrument::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(120deg, rgba(191,87,0,.04), transparent 40%, rgba(49,93,182,.045));
+    }
+
+    .instrument-top {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--hair);
+    }
+    .instrument-label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78rem; color: var(--muted); }
+    .mode-switch { display: flex; gap: 5px; padding: 4px; border: 1px solid var(--hair); border-radius: 999px; background: color-mix(in srgb, var(--paper-2) 72%, transparent); }
+    .mode-btn {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 7px 11px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: .84rem;
+      transition: 180ms ease;
+    }
+    .mode-btn.active { color: var(--ink); background: var(--surface-strong); box-shadow: 0 4px 16px rgba(20,18,13,.08); }
+
+    .instrument-stage { position: relative; min-height: 475px; }
+    .mode-panel {
+      position: absolute;
+      inset: 0;
+      padding: 30px 26px;
+      opacity: 0;
+      transform: translateY(10px) scale(.985);
+      pointer-events: none;
+      transition: 320ms cubic-bezier(.2,.7,.2,1);
+    }
+    .mode-panel.active { opacity: 1; transform: none; pointer-events: auto; }
+    .mode-title { display: flex; justify-content: space-between; gap: 18px; align-items: baseline; margin-bottom: 28px; }
+    .mode-title strong { font-size: 1.12rem; letter-spacing: -.025em; }
+    .mode-title span { color: var(--muted); font-size: .78rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    .train-flow {
+      display: grid;
+      grid-template-columns: 1fr 26px .9fr 26px 1.1fr;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .flow-block {
+      min-height: 116px;
+      border: 1px solid var(--hair);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--surface);
+    }
+    .flow-block .small { color: var(--muted); font-size: .76rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .flow-block strong { font-size: .96rem; letter-spacing: -.02em; }
+    .flow-block.query { background: var(--green-soft); border-color: color-mix(in srgb, var(--green) 42%, var(--hair)); }
+    .flow-arrow { text-align: center; color: var(--muted); font-size: 1.4rem; }
+
+    .memory-bank {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 9px;
+    }
+    .atom {
+      aspect-ratio: 1;
+      border: 1px solid var(--hair);
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: var(--surface-strong);
+      color: var(--muted);
+      font-size: .72rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      transition: 230ms ease;
+    }
+    .atom.on { background: var(--orange-soft); border-color: var(--orange); color: var(--ink); transform: translateY(-3px); box-shadow: 0 7px 18px rgba(191,87,0,.10); }
+
+    .train-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .train-line {
+      border-top: 1px solid var(--hair);
+      padding-top: 12px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+    .train-line strong { color: var(--ink); font-weight: 650; }
+
+    .reason-layout { display: grid; grid-template-columns: .82fr 1.18fr; gap: 24px; align-items: stretch; }
+    .causal-box, .candidate-box { border: 1px solid var(--hair); border-radius: 20px; background: var(--surface); padding: 18px; }
+    .causal-box { min-height: 305px; }
+    .mini-label { color: var(--muted); font-size: .73rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .01em; }
+    .dag { width: 100%; height: 175px; margin-top: 8px; overflow: hidden; }
+    .dag line { stroke: var(--hair-strong); stroke-width: 1.6; }
+    .dag circle { fill: var(--surface-strong); stroke: var(--hair-strong); stroke-width: 1.5; }
+    .dag text { fill: var(--ink); font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; text-anchor: middle; dominant-baseline: central; }
+    .validity-bar { margin-top: 8px; height: 7px; background: var(--red-soft); border-radius: 999px; overflow: hidden; border: 1px solid var(--hair); }
+    .validity-bar span { display: block; width: 70%; height: 100%; background: var(--green); }
+    .validity-text { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; color: var(--muted); font-size: .72rem; }
+
+    .candidate-box { display: grid; align-content: start; gap: 7px; min-width: 0; overflow: hidden; }
+    .candidate-head { display: grid; grid-template-columns: minmax(62px,.75fr) minmax(84px,1.25fr) 30px; gap: 8px; color: var(--muted); font-size: .68rem; padding-bottom: 6px; border-bottom: 1px solid var(--hair); min-width: 0; }
+    .candidate-row {
+      display: grid;
+      grid-template-columns: minmax(62px,.75fr) minmax(84px,1.25fr) 30px;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 7px;
+      border-radius: 11px;
+      transition: 250ms ease;
+      font-size: .74rem;
+      min-width: 0;
+    }
+    .candidate-row.selected { background: var(--green-soft); transform: translateX(3px); }
+    .candidate-row.invalid.selected { background: var(--red-soft); }
+    .candidate-answer { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .checks { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; }
+    .check { width: 7px; height: 7px; border-radius: 2px; border: 1px solid var(--hair-strong); background: transparent; }
+    .check.pass { background: var(--ink); border-color: var(--ink); }
+    .candidate-score { text-align: right; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    .instrument-caption {
+      position: relative;
+      z-index: 2;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      border-top: 1px solid var(--hair);
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: .78fr 1.22fr;
+      gap: 56px;
+      align-items: end;
+      margin-bottom: 44px;
+    }
+    .section-kicker { color: var(--orange); font-size: .80rem; text-transform: uppercase; letter-spacing: .10em; font-weight: 720; }
+    h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      line-height: .98;
+      letter-spacing: -.055em;
+      font-weight: 520;
+      margin-bottom: 0;
+    }
+    .section-copy { color: var(--muted); font-size: 1.05rem; max-width: 650px; margin-bottom: 3px; }
+
+    .research-ledger { border-top: 1px solid var(--hair-strong); }
+    .research-thread {
+      display: grid;
+      grid-template-columns: 72px 1.05fr .95fr;
+      gap: 32px;
+      padding: 36px 0;
+      border-bottom: 1px solid var(--hair);
+      align-items: center;
+    }
+    .thread-no { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--orange); font-size: .82rem; }
+    .thread-copy h3 { font-family: Georgia, "Times New Roman", serif; font-size: 1.75rem; font-weight: 520; letter-spacing: -.03em; margin-bottom: 8px; }
+    .thread-copy p { color: var(--muted); max-width: 610px; margin-bottom: 0; }
+    .thread-visual { min-height: 135px; display: flex; align-items: center; justify-content: flex-end; }
+
+    .mini-experts { width: min(100%, 360px); display: grid; grid-template-columns: repeat(8, 1fr); gap: 7px; }
+    .mini-expert { aspect-ratio: 1; border: 1px solid var(--hair); border-radius: 7px; background: var(--surface); transition: 220ms ease; }
+    .mini-expert.hot { background: var(--orange-soft); border-color: var(--orange); transform: translateY(-3px); }
+    .atom-strip { width: min(100%, 390px); display: flex; align-items: center; gap: 8px; }
+    .atom-strip .box { width: 46px; aspect-ratio: 1; border: 1px solid var(--hair); border-radius: 10px; background: var(--surface); display: grid; place-items: center; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .68rem; color: var(--muted); }
+    .atom-strip .box:nth-child(2), .atom-strip .box:nth-child(5) { background: var(--green-soft); border-color: var(--green); color: var(--ink); }
+    .atom-strip .arrow { color: var(--muted); }
+    .graph-mini { width: min(100%, 360px); height: 130px; }
+    .graph-mini line { stroke: var(--hair-strong); stroke-width: 1.5; }
+    .graph-mini circle { fill: var(--surface-strong); stroke: var(--green); stroke-width: 1.7; }
+    .graph-mini text { fill: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; text-anchor: middle; dominant-baseline: central; }
+    .foundation-line { width: min(100%, 390px); height: 100px; }
+    .foundation-line path { fill: none; stroke: var(--blue); stroke-width: 2; }
+    .foundation-line circle { fill: var(--surface-strong); stroke: var(--blue); stroke-width: 1.6; }
+
+    .project-list { border-top: 1px solid var(--hair-strong); }
+    .project {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr) 180px 188px;
+      gap: 30px;
+      align-items: center;
+      padding: 34px 0;
+      border-bottom: 1px solid var(--hair);
+      transition: padding-left 180ms ease, padding-right 180ms ease, background 180ms ease;
+    }
+    .project:hover {
+      padding-left: 10px;
+      padding-right: 10px;
+      background: color-mix(in srgb, var(--surface-strong) 42%, transparent);
+    }
+    .project-no {
+      align-self: start;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--orange);
+      font-size: .75rem;
+      line-height: 1.5;
+      padding-top: 7px;
+    }
+    .project-main { min-width: 0; }
+    .project-main h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.45rem, 2.3vw, 1.9rem);
+      font-weight: 520;
+      letter-spacing: -.035em;
+      margin-bottom: 8px;
+      line-height: 1.12;
+    }
+    .project-main h3 a {
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      text-underline-offset: 5px;
+      transition: text-decoration-color 160ms ease;
+    }
+    .project-main h3 a:hover { text-decoration-color: color-mix(in srgb, var(--orange) 55%, transparent); }
+    .project-main p { color: var(--muted); margin-bottom: 12px; max-width: 700px; }
+    .project-links { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+    .project-link {
+      color: var(--ink);
+      font-size: .76rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      text-decoration: underline;
+      text-decoration-color: color-mix(in srgb, var(--orange) 38%, transparent);
+      text-underline-offset: 4px;
+    }
+    .project-link:hover { color: var(--orange); text-decoration-color: var(--orange); }
+    .project-result { align-self: center; text-align: right; }
+    .project-result strong { display: block; font-size: 1.38rem; letter-spacing: -.04em; line-height: 1.05; }
+    .project-result span { display: block; color: var(--muted); font-size: .74rem; line-height: 1.4; margin-top: 7px; max-width: 178px; margin-left: auto; }
+
+    .project-visual {
+      position: relative;
+      width: 188px;
+      aspect-ratio: 1;
+      border: 1px solid var(--hair-strong);
+      border-radius: 22px;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(21,22,23,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(21,22,23,.035) 1px, transparent 1px),
+        color-mix(in srgb, var(--surface-strong) 82%, transparent);
+      background-size: 18px 18px, 18px 18px, auto;
+      box-shadow: 0 12px 34px rgba(37,31,21,.055);
+      justify-self: end;
+      transform: translateZ(0);
+    }
+    body.dark .project-visual {
+      background:
+        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px),
+        color-mix(in srgb, var(--surface-strong) 88%, transparent);
+      background-size: 18px 18px, 18px 18px, auto;
+    }
+    .project-visual::after {
+      content: attr(data-label);
+      position: absolute;
+      left: 12px;
+      bottom: 9px;
+      color: var(--muted);
+      font: 600 .61rem/1.1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .035em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+    .project-viz { width: 100%; height: 100%; display: block; }
+    .project:hover .project-visual { border-color: color-mix(in srgb, var(--orange) 45%, var(--hair-strong)); }
+    .project-archive {
+      margin-top: 22px;
+      display: flex;
+      justify-content: flex-end;
+      color: var(--muted);
+      font-size: .8rem;
+    }
+    .project-archive a { text-decoration: underline; text-underline-offset: 4px; }
+
+    .pub-list { display: grid; }
+    .pub {
+      display: grid;
+      grid-template-columns: 86px 1fr 150px;
+      gap: 26px;
+      align-items: start;
+      padding: 26px 0;
+      border-top: 1px solid var(--hair);
+    }
+    .pub:last-child { border-bottom: 1px solid var(--hair); }
+    .pub-year { color: var(--orange); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .80rem; padding-top: 4px; }
+    .pub-title { font-family: Georgia, "Times New Roman", serif; font-size: 1.27rem; letter-spacing: -.025em; margin-bottom: 6px; line-height: 1.25; }
+    .pub-title a { text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--orange) 45%, transparent); text-underline-offset: 4px; }
+    .pub-meta { color: var(--muted); font-size: .89rem; }
+    .pub-status { justify-self: end; color: var(--muted); font-size: .78rem; text-align: right; }
+
+    .timeline { position: relative; margin-top: 6px; }
+    .timeline::before { content: ""; position: absolute; left: 150px; top: 10px; bottom: 10px; width: 1px; background: var(--hair); }
+    .step { display: grid; grid-template-columns: 118px 1fr; gap: 66px; position: relative; padding-bottom: 46px; }
+    .step::before { content: ""; position: absolute; left: 145px; top: 8px; width: 11px; height: 11px; border-radius: 50%; background: var(--paper); border: 2px solid var(--orange); }
+    .step .date { color: var(--muted); font-size: .84rem; }
+    .step h3 { font-family: Georgia, "Times New Roman", serif; font-size: 1.35rem; font-weight: 520; margin-bottom: 3px; }
+    .step .place { color: var(--orange); font-size: .9rem; margin-bottom: 8px; }
+    .step p { color: var(--muted); max-width: 800px; margin-bottom: 0; }
+    .work-link { display: inline-block; margin-top: 8px; color: var(--ink); font-size: .78rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, var(--orange) 45%, transparent); }
+    .work-link:hover { color: var(--orange); }
+
+    .education-wrap { display: grid; grid-template-columns: 1.18fr .82fr; gap: 54px; }
+    .education-list, .award-list { border-top: 1px solid var(--hair-strong); }
+    .edu-item, .award-item { padding: 24px 0; border-bottom: 1px solid var(--hair); }
+    .edu-top { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline; }
+    .edu-item h3, .award-item h3 { font-family: Georgia, "Times New Roman", serif; font-size: 1.28rem; font-weight: 520; letter-spacing: -.02em; margin-bottom: 4px; }
+    .school { color: var(--orange); font-size: .90rem; }
+    .edu-date { color: var(--muted); font-size: .80rem; white-space: nowrap; }
+    .edu-detail { color: var(--muted); margin-top: 13px; font-size: .90rem; max-width: 760px; }
+    .course-label { color: var(--ink); font-weight: 650; }
+    .course-line { margin-top: 8px; line-height: 1.62; }
+    .award-item p { color: var(--muted); margin-bottom: 0; font-size: .89rem; }
+
+    .contact {
+      margin: 92px 0 48px;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 60px;
+      align-items: end;
+      padding: 50px 0 10px;
+      border-top: 1px solid var(--hair-strong);
+    }
+    .contact p { color: var(--muted); max-width: 620px; }
+    .contact-links { display: grid; gap: 9px; }
+    .contact-links .pill { justify-content: space-between; }
+
+    footer {
+      width: min(calc(100% - 38px), var(--max));
+      margin: 0 auto;
+      padding: 0 0 34px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      color: var(--muted);
+      font-size: .80rem;
+    }
+
+    .reveal { opacity: 0; transform: translateY(16px); transition: 640ms cubic-bezier(.2,.7,.2,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 70px; }
+      .hero-visual { min-height: 570px; }
+      .section-head { grid-template-columns: 1fr; gap: 16px; }
+      .research-thread { grid-template-columns: 55px 1fr; }
+      .thread-visual { grid-column: 2; justify-content: flex-start; }
+      .project { grid-template-columns: 72px minmax(0, 1fr) 158px; gap: 22px; }
+      .project-result { display: none; }
+      .project-visual { width: 158px; }
+      .education-wrap, .contact { grid-template-columns: 1fr; }
+      .pub { grid-template-columns: 70px 1fr; }
+      .pub-status { grid-column: 2; justify-self: start; text-align: left; }
+    }
+
+    @media (max-width: 680px) {
+      main { width: min(calc(100% - 24px), var(--max)); }
+      section { padding: 76px 0; }
+      h1 { font-size: clamp(3.7rem, 19vw, 5.7rem); }
+      .hero { min-height: auto; }
+      .hero-visual { min-height: 650px; }
+      .research-instrument { min-height: 610px; border-radius: 25px; }
+      .instrument-stage { min-height: 650px; }
+      .mode-panel { padding: 24px 16px; }
+      .train-flow { grid-template-columns: 1fr; }
+      .flow-arrow { transform: rotate(90deg); }
+      .flow-block { min-height: 92px; }
+      .memory-bank { grid-template-columns: repeat(6, 1fr); }
+      .atom { border-radius: 8px; }
+      .train-bottom { grid-template-columns: 1fr; }
+      .reason-layout { grid-template-columns: 1fr; }
+      .causal-box { min-height: 210px; }
+      .dag { height: 120px; }
+      .candidate-box { gap: 4px; }
+      .candidate-row { padding: 5px; }
+      .candidate-head, .candidate-row { grid-template-columns: minmax(58px,.7fr) minmax(86px,1.3fr) 26px; }
+      .research-thread { grid-template-columns: 1fr; gap: 12px; padding: 28px 0; }
+      .thread-visual { grid-column: 1; justify-content: flex-start; }
+      .project { grid-template-columns: 1fr; gap: 13px; padding: 28px 0; }
+      .project:hover { padding-left: 0; padding-right: 0; background: transparent; }
+      .project-no { padding-top: 0; }
+      .project-result { display: block; justify-self: start; text-align: left; padding-top: 2px; }
+      .project-result span { max-width: 290px; margin-left: 0; }
+      .project-visual { width: min(100%, 320px); justify-self: start; }
+      .project-archive { justify-content: flex-start; }
+      .pub { grid-template-columns: 1fr; gap: 7px; }
+      .pub-status { grid-column: 1; }
+      .timeline::before { left: 8px; }
+      .step { grid-template-columns: 1fr; gap: 7px; padding-left: 32px; }
+      .step::before { left: 3px; }
+      .edu-top { grid-template-columns: 1fr; gap: 5px; }
+      .contact { gap: 28px; }
+      footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="ambientColor" aria-hidden="true">
+    <span class="ambient-orb orb-orange"></span>
+    <span class="ambient-orb orb-blue"></span>
+    <span class="ambient-orb orb-green"></span>
+    <span class="ambient-orb orb-red"></span>
+  </div>
+  <canvas id="ambientBg" aria-hidden="true"></canvas>
+  <div class="progress" id="progress"></div>
+
+  <div class="nav-wrap">
+    <nav aria-label="Primary">
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span><span>Omatharv Vaidya</span></a>
+      <div class="nav-links">
+        <a href="#research">Research</a>
+        <a href="#publications">Publications</a>
+        <a href="#experience">Work</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle color theme">◐</button>
+        <a class="pill" href="Omatharv_Vaidya_CV.pdf" target="_blank" rel="noreferrer">CV ↗</a>
+      </div>
+    </nav>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Computer Science Ph.D. · UT Austin</div>
+        <h1>Omatharv<br><span class="name-accent">Vaidya</span></h1>
+        <p class="hero-intro">I am a fourth-year Computer Science Ph.D. student at UT Austin. I study optimization and efficient learning methods for large models, with current work on Mixture-of-Experts training, low-rank adaptation, and reasoning systems.</p>
+        <p class="hero-advisors">I am advised by <a href="https://nhatptnk8912.github.io/" target="_blank" rel="noreferrer">Dr. Nhat Ho</a> and <a href="https://leqiliu.github.io/" target="_blank" rel="noreferrer">Dr. Leqi Liu</a>.</p>
+        <p class="hero-note">A recurring theme in my work is to use structure already present in the model or task to guide learning and inference.</p>
+        <div class="hero-actions">
+          <a class="pill primary" href="#research">Research ↓</a>
+          <a class="pill" href="mailto:vomatharv@utexas.edu">Email</a>
+          <a class="pill" href="https://www.linkedin.com/in/omatharv-b-vaidya-0b6966327/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-label="Interactive visual based on recent research">
+        <canvas id="field"></canvas>
+        <div class="research-instrument">
+          <div class="instrument-top">
+            <span class="instrument-label">two current research threads</span>
+            <div class="mode-switch" role="tablist" aria-label="Research visual mode">
+              <button class="mode-btn active" data-mode="training" role="tab" aria-selected="true">Training</button>
+              <button class="mode-btn" data-mode="reasoning" role="tab" aria-selected="false">Reasoning</button>
+            </div>
+          </div>
+
+          <div class="instrument-stage">
+            <div class="mode-panel active" id="trainingPanel" data-panel="training">
+              <div class="mode-title"><strong>Queryable low-rank updates</strong><span>state → query → memory</span></div>
+              <div class="train-flow">
+                <div class="flow-block">
+                  <span class="small">frozen model</span>
+                  <strong>Current rank-space state</strong>
+                  <span class="small">depth history included</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-block query">
+                  <span class="small">query</span>
+                  <strong>Retrieve an update</strong>
+                  <span class="small">instruction can shape routing</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-block">
+                  <span class="small">shared memory</span>
+                  <div class="memory-bank" id="memoryBank">
+                    <div class="atom">C1</div><div class="atom">C2</div><div class="atom">C3</div>
+                    <div class="atom">C4</div><div class="atom">C5</div><div class="atom">C6</div>
+                  </div>
+                </div>
+              </div>
+              <div class="train-bottom">
+                <div class="train-line"><strong>Reuse</strong> Shared atoms can contribute across layers and tasks.</div>
+                <div class="train-line"><strong>Adapt</strong> The selected low-rank update depends on the current computation.</div>
+              </div>
+            </div>
+
+            <div class="mode-panel" id="reasoningPanel" data-panel="reasoning">
+              <div class="mode-title"><strong>Many valid answers, one causal test</strong><span>candidate pool → six checks</span></div>
+              <div class="reason-layout">
+                <div class="causal-box">
+                  <div class="mini-label">causal graph</div>
+                  <svg class="dag" viewBox="0 0 220 180" aria-label="Illustrative causal graph">
+                    <defs>
+                      <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="currentColor"></path></marker>
+                    </defs>
+                    <line x1="45" y1="35" x2="107" y2="35" marker-end="url(#arrow)"></line>
+                    <line x1="110" y1="42" x2="172" y2="84" marker-end="url(#arrow)"></line>
+                    <line x1="45" y1="42" x2="70" y2="104" marker-end="url(#arrow)"></line>
+                    <line x1="106" y1="42" x2="80" y2="104" marker-end="url(#arrow)"></line>
+                    <line x1="176" y1="94" x2="100" y2="122" marker-end="url(#arrow)"></line>
+                    <line x1="84" y1="116" x2="165" y2="140" marker-end="url(#arrow)"></line>
+                    <circle cx="42" cy="34" r="15"></circle><text x="42" y="34">Z1</text>
+                    <circle cx="111" cy="34" r="15"></circle><text x="111" y="34">Z2</text>
+                    <circle cx="177" cy="88" r="15"></circle><text x="177" y="88">Z3</text>
+                    <circle cx="76" cy="113" r="15"></circle><text x="76" y="113">X</text>
+                    <circle cx="173" cy="143" r="15"></circle><text x="173" y="143">Y</text>
+                  </svg>
+                  <div class="validity-bar"><span></span></div>
+                  <div class="validity-text"><span>valid answer mass</span><span>split across several sets</span></div>
+                </div>
+
+                <div class="candidate-box" id="candidateBox">
+                  <div class="candidate-head"><span>trace</span><span>checks</span><span>score</span></div>
+                  <div class="candidate-row selected" data-score="6"><span class="candidate-answer">{Z1,Z3}</span><span class="checks"><i class="check pass"></i><i class="check pass"></i><i class="check pass"></i><i class="check pass"></i><i class="check pass"></i><i class="check pass"></i></span><span class="candidate-score">6</span></div>
+                  <div class="candidate-row invalid" data-score="3"><span class="candidate-answer">∅</span><span class="checks"><i class="check pass"></i><i class="check pass"></i><i class="check"></i><i class="check"></i><i class="check pass"></i><i class="check"></i></span><span class="candidate-score">3</span></div>
+                  <div class="candidate-row" data-score="5"><span class="candidate-answer">{Z1}</span><span class="checks"><i class="check pass"></i><i class="check pass"></i><i class="check pass"></i><i class="check"></i><i class="check pass"></i><i class="check pass"></i></span><span class="candidate-score">5</span></div>
+                  <div class="candidate-row" data-score="4"><span class="candidate-answer">{Z2}</span><span class="checks"><i class="check pass"></i><i class="check pass"></i><i class="check"></i><i class="check pass"></i><i class="check pass"></i><i class="check"></i></span><span class="candidate-score">4</span></div>
+                  <div class="candidate-row invalid" data-score="3"><span class="candidate-answer">∅</span><span class="checks"><i class="check pass"></i><i class="check"></i><i class="check"></i><i class="check pass"></i><i class="check pass"></i><i class="check"></i></span><span class="candidate-score">3</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="instrument-caption" id="instrumentCaption">Queryable LoRA uses model state and depth history to retrieve shared low-rank update atoms.</div>
+        </div>
+      </div>
+
+      <div class="research-typing" aria-label="Rotating research questions">
+        <span class="typing-label">research question</span>
+        <span class="typing-line"><span id="researchTyped"></span><span class="typing-cursor" aria-hidden="true"></span></span>
+      </div>
+    </section>
+
+    <section id="research" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Research</div>
+          <h2>Structure as a learning signal.</h2>
+        </div>
+        <p class="section-copy">I work on learning algorithms for large models. My current projects study how model architecture, training dynamics, and formal task structure can guide optimization and inference.</p>
+      </div>
+
+      <div class="research-ledger">
+        <article class="research-thread">
+          <div class="thread-no">01</div>
+          <div class="thread-copy">
+            <h3>Optimization for sparse models</h3>
+            <p>Current work studies expert-specific optimization for Mixture-of-Experts models, including preconditioning, signal-to-noise gating, and excitation-based updates.</p>
+          </div>
+          <div class="thread-visual"><div class="mini-experts" id="expertGrid" aria-label="Animated Mixture-of-Experts routing"></div></div>
+        </article>
+
+        <article class="research-thread">
+          <div class="thread-no">02</div>
+          <div class="thread-copy">
+            <h3>Efficient adaptation</h3>
+            <p>Queryable LoRA uses a shared memory of low-rank update atoms and state-dependent routing to make adapter updates depend on the current computation.</p>
+          </div>
+          <div class="thread-visual">
+            <div class="atom-strip" aria-hidden="true"><div class="box">q</div><div class="arrow">→</div><div class="box">C1</div><div class="box">C2</div><div class="box">C3</div><div class="box">C4</div><div class="arrow">→</div><div class="box">ΔW</div></div>
+          </div>
+        </article>
+
+        <article class="research-thread">
+          <div class="thread-no">03</div>
+          <div class="thread-copy">
+            <h3>Reasoning and verification</h3>
+            <p>CALVER uses causal graph criteria to score model-generated reasoning traces when a question admits several valid answers.</p>
+          </div>
+          <div class="thread-visual">
+            <svg class="graph-mini" viewBox="0 0 360 130" aria-hidden="true">
+              <line x1="35" y1="40" x2="120" y2="40"></line><line x1="120" y1="40" x2="210" y2="65"></line><line x1="35" y1="40" x2="105" y2="95"></line><line x1="120" y1="40" x2="105" y2="95"></line><line x1="105" y1="95" x2="285" y2="94"></line>
+              <circle cx="35" cy="40" r="14"></circle><text x="35" y="40">Z1</text><circle cx="120" cy="40" r="14"></circle><text x="120" y="40">Z2</text><circle cx="210" cy="65" r="14"></circle><text x="210" y="65">Z3</text><circle cx="105" cy="95" r="14"></circle><text x="105" y="95">X</text><circle cx="285" cy="94" r="14"></circle><text x="285" y="94">Y</text>
+            </svg>
+          </div>
+        </article>
+
+        <article class="research-thread">
+          <div class="thread-no">04</div>
+          <div class="thread-copy">
+            <h3>Stochastic and particle methods</h3>
+            <p>Earlier work includes Hamiltonian Monte Carlo, particle methods, Gaussian processes, and stochastic analysis for optimization and sequential prediction.</p>
+          </div>
+          <div class="thread-visual">
+            <svg class="foundation-line" viewBox="0 0 390 100" aria-hidden="true"><path d="M8,76 C58,16 93,87 139,50 S214,15 252,55 S326,84 382,21"></path><circle cx="8" cy="76" r="4"></circle><circle cx="139" cy="50" r="4"></circle><circle cx="252" cy="55" r="4"></circle><circle cx="382" cy="21" r="4"></circle></svg>
+          </div>
+        </article>
+      </div>
+    </section>
+
+
+    <section id="publications" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Publications and manuscripts</div>
+          <h2>Selected writing.</h2>
+        </div>
+        <p class="section-copy">Recent manuscripts study efficient adaptation and causal reasoning. Earlier work studied optimization and particle methods.</p>
+      </div>
+
+      <div class="pub-list">
+        <article class="pub">
+          <div class="pub-year">2027</div>
+          <div>
+            <div class="pub-title"><a href="https://arxiv.org/abs/2608.03506" target="_blank" rel="noreferrer">When Many Answers Are Valid, Voting Fails: Symbolic Verification for Best-of-K Causal Reasoning in LLMs</a></div>
+            <div class="pub-meta">Omatharv Bharat Vaidya, Connor Thomas Jerzak, Zayne Rea Sprague, Fangcong Yin, Nhat Ho</div>
+          </div>
+          <div class="pub-status">Submitted to AAAI</div>
+        </article>
+
+        <article class="pub">
+          <div class="pub-year">2026</div>
+          <div>
+            <div class="pub-title"><a href="https://arxiv.org/abs/2605.08423" target="_blank" rel="noreferrer">Queryable LoRA: Instruction-Regularized Routing Over Shared Low-Rank Update Atoms</a></div>
+            <div class="pub-meta">Omatharv Bharat Vaidya, Connor T. Jerzak, Nhat Ho, Chandrajit Bajaj</div>
+          </div>
+          <div class="pub-status">Submitted to NeurIPS</div>
+        </article>
+
+        <article class="pub">
+          <div class="pub-year">2023</div>
+          <div>
+            <div class="pub-title"><a href="https://arxiv.org/abs/2206.14134" target="_blank" rel="noreferrer">HMC-PSO: A Hamiltonian Monte Carlo and Particle Swarm Optimization-Based Optimizer</a></div>
+            <div class="pub-meta">Omatharv Bharat Vaidya, Rithvik Terence D'Souza, et al. · International Conference on Neural Information Processing</div>
+          </div>
+          <div class="pub-status">Published</div>
+        </article>
+
+        <article class="pub">
+          <div class="pub-year">2022</div>
+          <div>
+            <div class="pub-title"><a href="https://arxiv.org/abs/2211.14517" target="_blank" rel="noreferrer">A Particle-based Sparse Gaussian Process Optimizer</a></div>
+            <div class="pub-meta">Chandrajit Bajaj et al. · arXiv:2211.14517</div>
+          </div>
+          <div class="pub-status">Preprint</div>
+        </article>
+
+        <article class="pub">
+          <div class="pub-year">2021</div>
+          <div>
+            <div class="pub-title"><a href="https://arxiv.org/abs/2104.04795" target="_blank" rel="noreferrer">A Swarm Variant for the Schrödinger Solver</a></div>
+            <div class="pub-meta">Urvil Nileshbhai Jivani et al. · International Joint Conference on Neural Networks</div>
+          </div>
+          <div class="pub-status">Published</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Work Experience</div>
+          <h2>Research roles</h2>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <article class="step">
+          <div class="date">Aug 2022 — May 2023</div>
+          <div><h3>Associate Research Scientist</h3><div class="place">Oden Institute for Computational Engineering and Sciences</div><p>Developed a particle-swarm optimization framework using Gaussian Process Regression to learn descent dynamics and evaluate candidate update directions.</p></div>
+        </article>
+        <article class="step">
+          <div class="date">May 2022 — Aug 2022</div>
+          <div><h3>Research Intern</h3><div class="place">University of Warwick</div><p>Studied neural stochastic differential equation models, path-signature features, and error bounds for sequential prediction.</p></div>
+        </article>
+        <article class="step">
+          <div class="date">Jul 2021 — Sep 2021</div>
+          <div><h3>Research Intern</h3><div class="place">Oden Institute for Computational Engineering and Sciences</div><p>Built Lie-group latent representations for rigid-body attitude control and integrated them with belief-space navigation.</p></div>
+        </article>
+        <article class="step">
+          <div class="date">May 2020 — Jul 2020</div>
+          <div><h3>Research Intern</h3><div class="place">Indian Space Research Organisation</div><p>Built semantic-segmentation pipelines for detecting solar farms and sand dunes in Landsat-8 and Sentinel-2 imagery.</p><a class="work-link" href="https://drive.google.com/file/d/16n66OoAE8bH7n3LNS28F-IpYqwW4fSf3/view?usp=sharing" target="_blank" rel="noreferrer">project material ↗</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="projects" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Projects</div>
+          <h2>Recent work</h2>
+        </div>
+      </div>
+
+      <div class="project-list">
+        <article class="project">
+          <div class="project-no">01<br>2026</div>
+          <div class="project-main">
+            <h3><a href="https://arxiv.org/abs/2605.08423" target="_blank" rel="noreferrer">Queryable LoRA</a></h3>
+            <p>Instruction-regularized routing over a shared memory of low-rank update atoms for parameter-efficient fine-tuning.</p>
+            <div class="project-links"><a class="project-link" href="https://arxiv.org/abs/2605.08423" target="_blank" rel="noreferrer">paper ↗</a></div>
+          </div>
+          <div class="project-result"><strong>65.76%</strong><span>Qwen-0.5B ARC accuracy reported in the project</span></div>
+          <div class="project-visual" data-label="query → memory"><canvas class="project-viz" data-viz="lora"></canvas></div>
+        </article>
+
+        <article class="project">
+          <div class="project-no">02<br>2026</div>
+          <div class="project-main">
+            <h3><a href="https://arxiv.org/abs/2608.03506" target="_blank" rel="noreferrer">CALVER</a></h3>
+            <p>Symbolic verification for selecting among sampled causal reasoning traces when several answers can satisfy the query.</p>
+            <div class="project-links"><a class="project-link" href="https://arxiv.org/abs/2608.03506" target="_blank" rel="noreferrer">paper ↗</a></div>
+          </div>
+          <div class="project-result"><strong>42.1%</strong><span>CLEAR clean-core accuracy reported in the paper</span></div>
+          <div class="project-visual" data-label="candidate verification"><canvas class="project-viz" data-viz="calver"></canvas></div>
+        </article>
+
+        <article class="project" id="project-moe-optimization">
+          <div class="project-no">03<br>2025–present</div>
+          <div class="project-main">
+            <h3>Efficient Optimization Schemes for Mixture-of-Experts (MoE) Models</h3>
+            <p>Adaptive stochastic optimization for MoE-based language models, with specialized preconditioned updates designed to improve training stability and convergence. Current experiments use Mixtral, Qwen-MoE, and OLMoE to study scalability and cost–performance trade-offs.</p>
+          </div>
+          <div class="project-result"><strong>MoE</strong><span>Mixtral, Qwen-MoE, and OLMoE experiments</span></div>
+          <div class="project-visual" data-label="expert-specific optimization"><canvas class="project-viz" data-viz="moeopt"></canvas></div>
+        </article>
+
+        <article class="project">
+          <div class="project-no">04<br>2025</div>
+          <div class="project-main">
+            <h3>Empirical Evaluation of MoEs in LLMs</h3>
+            <p>A study of sparse and dense language models across benchmark performance and efficiency metrics.</p>
+          </div>
+          <div class="project-result"><strong>347</strong><span>language models collected and analyzed</span></div>
+          <div class="project-visual" data-label="dense / sparse geometry"><canvas class="project-viz" data-viz="moecluster"></canvas></div>
+        </article>
+
+        <article class="project">
+          <div class="project-no">05<br>2025</div>
+          <div class="project-main">
+            <h3><a href="https://github.com/kellyjqw/OSTC" target="_blank" rel="noreferrer">Online Frame-wise Object State Change Detection</a></h3>
+            <p>A causal frame-wise detector using frozen LongCLIP embeddings and lightweight recurrent memory to detect state transitions in streaming video.</p>
+            <div class="project-links"><a class="project-link" href="https://github.com/kellyjqw/OSTC" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+          </div>
+          <div class="project-result"><strong>0.13 s</strong><span>reported frame latency on an NVIDIA GH200</span></div>
+          <div class="project-visual" data-label="stream → memory → state"><canvas class="project-viz" data-viz="ostc"></canvas></div>
+        </article>
+
+        <article class="project">
+          <div class="project-no">06<br>2022–2023</div>
+          <div class="project-main">
+            <h3><a href="https://arxiv.org/abs/2211.14517" target="_blank" rel="noreferrer">Particle-based Sparse Gaussian Process Optimizer</a></h3>
+            <p>A particle-swarm optimizer that uses Gaussian Process Regression to learn descent dynamics and explore candidate update directions.</p>
+            <div class="project-links"><a class="project-link" href="https://arxiv.org/abs/2211.14517" target="_blank" rel="noreferrer">paper ↗</a></div>
+          </div>
+          <div class="project-result"><strong>GP</strong><span>learned descent dynamics over candidate updates</span></div>
+          <div class="project-visual" data-label="posterior-guided swarm"><canvas class="project-viz" data-viz="gp"></canvas></div>
+        </article>
+
+        <article class="project">
+          <div class="project-no">07<br>2022–2023</div>
+          <div class="project-main">
+            <h3><a href="https://arxiv.org/abs/2206.14134" target="_blank" rel="noreferrer">HMC-PSO</a></h3>
+            <p>A hybrid optimizer combining Hamiltonian Monte Carlo with momentum-based particle swarm optimization.</p>
+            <div class="project-links"><a class="project-link" href="https://arxiv.org/abs/2206.14134" target="_blank" rel="noreferrer">paper ↗</a></div>
+          </div>
+          <div class="project-result"><strong>8 / 10</strong><span>dataset-loss settings ranked first among six optimizers</span></div>
+          <div class="project-visual" data-label="hamiltonian swarm"><canvas class="project-viz" data-viz="hmc"></canvas></div>
+        </article>
+
+        <article class="project">
+          <div class="project-no">08<br>2022</div>
+          <div class="project-main">
+            <h3>Neural SDEs and Path Signatures</h3>
+            <p>Scoring rules, path-signature representations, and theoretical analysis for reliable sequential prediction with Neural Stochastic Differential Equations.</p>
+          </div>
+          <div class="project-result"><strong>SDE</strong><span>continuous-time sequential prediction</span></div>
+          <div class="project-visual" data-label="stochastic path"><canvas class="project-viz" data-viz="sde"></canvas></div>
+        </article>
+
+        <article class="project">
+          <div class="project-no">09<br>2021</div>
+          <div class="project-main">
+            <h3>Lie-Group Latent Representations for Belief-Space Navigation</h3>
+            <p>A variational autoencoder with Lie-group latent representations for rigid-body attitude control and hand-robot trajectory generation.</p>
+          </div>
+          <div class="project-result"><strong>SO(3)</strong><span>geometry-aware latent control</span></div>
+          <div class="project-visual" data-label="rotation manifold"><canvas class="project-viz" data-viz="lie"></canvas></div>
+        </article>
+
+        <article class="project">
+          <div class="project-no">10<br>2020–2021</div>
+          <div class="project-main">
+            <h3><a href="https://arxiv.org/abs/2104.04795" target="_blank" rel="noreferrer">A Swarm Variant for the Schrödinger Solver</a></h3>
+            <p>Derivative-free optimization for Physics-Informed Neural Network solutions of the time-independent Schrödinger equation.</p>
+            <div class="project-links"><a class="project-link" href="https://arxiv.org/abs/2104.04795" target="_blank" rel="noreferrer">paper ↗</a></div>
+          </div>
+          <div class="project-result"><strong>IJCNN 2021</strong><span>published work</span></div>
+          <div class="project-visual" data-label="ψ(x) + swarm"><canvas class="project-viz" data-viz="schrodinger"></canvas></div>
+        </article>
+
+        <article class="project">
+          <div class="project-no">11<br>2020</div>
+          <div class="project-main">
+            <h3><a href="https://drive.google.com/file/d/16n66OoAE8bH7n3LNS28F-IpYqwW4fSf3/view?usp=sharing" target="_blank" rel="noreferrer">Satellite Image Segmentation at ISRO</a></h3>
+            <p>Semantic-segmentation pipelines for detecting solar farms and sand dunes in Landsat-8 and Sentinel-2 satellite imagery.</p>
+            <div class="project-links"><a class="project-link" href="https://drive.google.com/file/d/16n66OoAE8bH7n3LNS28F-IpYqwW4fSf3/view?usp=sharing" target="_blank" rel="noreferrer">project material ↗</a></div>
+          </div>
+          <div class="project-result"><strong>U-Net</strong><span>remote-sensing segmentation</span></div>
+          <div class="project-visual" data-label="satellite → mask"><canvas class="project-viz" data-viz="isro"></canvas></div>
+        </article>
+
+        <article class="project">
+          <div class="project-no">12<br>2020</div>
+          <div class="project-main">
+            <h3>Bayesian Multi-Factor Estimation for Portfolio Optimization</h3>
+            <p>A Bayesian multi-factor portfolio optimization framework combining Markowitz quadratic programming with Fama-French return estimates and covariance modeling across 30 U.S. industry portfolios.</p>
+          </div>
+          <div class="project-result"><strong>15%</strong><span>reduction in volatility compared with baseline approaches</span></div>
+          <div class="project-visual" data-label="factors → posterior → frontier"><canvas class="project-viz" data-viz="portfolio"></canvas></div>
+        </article>
+      </div>
+
+      <div class="project-archive"><a href="https://drive.google.com/file/d/1sYk2l3Q8JKgpP9ETcRjn-0XfvWxNNABF/view?usp=sharing" target="_blank" rel="noreferrer">Earlier project material ↗</a></div>
+    </section>
+
+    <section id="education" class="reveal">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Education</div>
+          <h2>Computer science and mathematics.</h2>
+        </div>
+        <p class="section-copy">My doctoral work is in computer science at UT Austin. My undergraduate education combined computer science and mathematics at BITS Pilani.</p>
+      </div>
+
+      <div class="education-wrap">
+        <div class="education-list">
+          <article class="edu-item">
+            <div class="edu-top">
+              <div><h3>Ph.D. in Computer Science</h3><div class="school">The University of Texas at Austin</div></div>
+              <div class="edu-date">2023 — present</div>
+            </div>
+            <div class="edu-detail">
+              <div>Specialization in Machine Learning and Artificial Intelligence · GPA 3.63/4.0</div>
+              <div class="course-line"><span class="course-label">Coursework</span> Convex Optimization, Theory of Probability II, Advanced Probability, Dependable Computing Systems, Continuous Algorithms, Making Big Data, Advanced Complexity Theory, Visual Recognition, Generative Models.</div>
+              <div class="course-line"><span class="course-label">Teaching assistant</span> Predictive Machine Learning, Principles of Machine Learning, Elements of Scientific Computing.</div>
+            </div>
+          </article>
+
+          <article class="edu-item">
+            <div class="edu-top">
+              <div><h3>M.S. in Mathematics</h3><div class="school">BITS Pilani</div></div>
+              <div class="edu-date">2018 — 2023</div>
+            </div>
+            <div class="edu-detail">
+              <div>GPA 8.77/10.0</div>
+              <div class="course-line"><span class="course-label">Coursework</span> Optimization, Discrete Mathematics, Elementary Real Analysis, Algebra I, Mathematical Methods, Operations Research, Graphs and Networks, Measure and Integration, Introduction to Topology, Ordinary Differential Equations, Numerical Analysis, Introduction to Functional Analysis, Differential Geometry, Partial Differential Equations.</div>
+            </div>
+          </article>
+
+          <article class="edu-item">
+            <div class="edu-top">
+              <div><h3>B.E. in Computer Science</h3><div class="school">BITS Pilani</div></div>
+              <div class="edu-date">2018 — 2023</div>
+            </div>
+            <div class="edu-detail">
+              <div>GPA 8.77/10.0</div>
+              <div class="course-line"><span class="course-label">Coursework</span> Data Structures &amp; Algorithms, Database Systems, Object Oriented Programming, Logic in Computer Science, Digital Design, Discrete Structures for Computer Science, Microprocessors &amp; Interfacing, Principles of Programming Languages, Computer Networks, Computer Architecture, Theory of Computation, Compiler Construction, Design &amp; Analysis of Algorithms, Operating Systems.</div>
+            </div>
+          </article>
+        </div>
+
+        <div>
+          <div class="section-kicker">Awards</div>
+          <div class="award-list" style="margin-top:18px">
+            <article class="award-item"><h3>Browne Graduate Fellowship</h3><p>Graduate computer science fellowship at UT Austin.</p></article>
+            <article class="award-item"><h3>INSPIRE Scholarship</h3><p>Government of India scholarship for advanced study in science.</p></article>
+            <article class="award-item"><h3>INMO Trainee</h3><p>Selected among 30 students from Mumbai for HBCSE training and the Indian National Mathematics Olympiad.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact reveal">
+      <div>
+        <div class="section-kicker">Contact</div>
+        <h2>Get in touch.</h2>
+        <p>I am happy to discuss research in machine learning optimization, efficient model training, and reasoning systems.</p>
+      </div>
+      <div class="contact-links">
+        <a class="pill primary" href="mailto:vomatharv@utexas.edu"><span>vomatharv@utexas.edu</span><span>↗</span></a>
+        <a class="pill" href="https://www.linkedin.com/in/omatharv-b-vaidya-0b6966327/" target="_blank" rel="noreferrer"><span>LinkedIn</span><span>↗</span></a>
+        <a class="pill" href="Omatharv_Vaidya_CV.pdf" target="_blank" rel="noreferrer"><span>Curriculum vitae</span><span>↗</span></a>
+        <button class="pill" id="copyEmail" style="cursor:pointer"><span id="copyText">Copy email</span><span>＋</span></button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Omatharv Vaidya · Austin, Texas</span>
+    <span>Last updated September 2026</span>
+  </footer>
+
+  <script>
+    const body = document.body;
+    const themeToggle = document.getElementById('themeToggle');
+    let saved = null;
+    try { saved = localStorage.getItem('ov-theme'); } catch (_) {}
+    if (saved === 'dark') body.classList.add('dark');
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      try { localStorage.setItem('ov-theme', body.classList.contains('dark') ? 'dark' : 'light'); } catch (_) {}
+    });
+
+    const progress = document.getElementById('progress');
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+    };
+    addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    const modeButtons = document.querySelectorAll('.mode-btn');
+    const panels = document.querySelectorAll('.mode-panel');
+    const instrumentCaption = document.getElementById('instrumentCaption');
+    const captions = {
+      training: 'Queryable LoRA uses model state and depth history to retrieve shared low-rank update atoms.',
+      reasoning: 'CALVER scores sampled reasoning traces against causal criteria and selects a valid candidate from the pool.'
+    };
+    modeButtons.forEach(btn => btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode;
+      modeButtons.forEach(b => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', b === btn ? 'true' : 'false'); });
+      panels.forEach(p => p.classList.toggle('active', p.dataset.panel === mode));
+      instrumentCaption.animate([{opacity:.25, transform:'translateY(4px)'},{opacity:1, transform:'translateY(0)'}], {duration:250, easing:'ease-out'});
+      instrumentCaption.textContent = captions[mode];
+    }));
+
+    const atoms = [...document.querySelectorAll('#memoryBank .atom')];
+    function routeAtoms() {
+      atoms.forEach(a => a.classList.remove('on'));
+      const first = Math.floor(Math.random() * atoms.length);
+      let second = Math.floor(Math.random() * atoms.length);
+      if (second === first) second = (second + 2) % atoms.length;
+      atoms[first].classList.add('on');
+      atoms[second].classList.add('on');
+    }
+    routeAtoms();
+    setInterval(routeAtoms, 1350);
+
+    const candidateRows = [...document.querySelectorAll('.candidate-row')];
+    let candidateIndex = 0;
+    function cycleCandidate() {
+      candidateRows.forEach(r => r.classList.remove('selected'));
+      const best = candidateRows.filter(r => Number(r.dataset.score) === 6);
+      if (candidateIndex % 4 === 3) {
+        const invalids = candidateRows.filter(r => r.classList.contains('invalid'));
+        invalids[candidateIndex % invalids.length].classList.add('selected');
+      } else {
+        best[0].classList.add('selected');
+      }
+      candidateIndex++;
+    }
+    setInterval(cycleCandidate, 1500);
+
+    const expertGrid = document.getElementById('expertGrid');
+    for (let i = 0; i < 24; i++) {
+      const e = document.createElement('div');
+      e.className = 'mini-expert';
+      expertGrid.appendChild(e);
+    }
+    function routeExperts() {
+      const nodes = [...expertGrid.children];
+      nodes.forEach(n => n.classList.remove('hot'));
+      const picks = new Set();
+      while (picks.size < 5) picks.add(Math.floor(Math.random() * nodes.length));
+      picks.forEach(i => nodes[i].classList.add('hot'));
+    }
+    routeExperts();
+    setInterval(routeExperts, 1450);
+
+    const copyEmail = document.getElementById('copyEmail');
+    const copyText = document.getElementById('copyText');
+    copyEmail.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText('vomatharv@utexas.edu');
+        copyText.textContent = 'Email copied';
+      } catch {
+        copyText.textContent = 'vomatharv@utexas.edu';
+      }
+      setTimeout(() => copyText.textContent = 'Copy email', 1800);
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: .10 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const canvas = document.getElementById('field');
+    const ctx = canvas.getContext('2d');
+    let points = [];
+    let dpr = Math.min(devicePixelRatio || 1, 2);
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      points = Array.from({length:34}, () => ({
+        x: Math.random() * rect.width,
+        y: Math.random() * rect.height,
+        vx: (Math.random() - .5) * .12,
+        vy: (Math.random() - .5) * .12,
+        r: Math.random() * 1.2 + .5
+      }));
+    }
+    function drawField() {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0,0,rect.width,rect.height);
+      const dark = body.classList.contains('dark');
+      const stroke = dark ? 'rgba(240,230,215,.09)' : 'rgba(21,22,23,.07)';
+      const fill = dark ? 'rgba(242,238,229,.24)' : 'rgba(21,22,23,.20)';
+      points.forEach((p,i) => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > rect.width) p.vx *= -1;
+        if (p.y < 0 || p.y > rect.height) p.vy *= -1;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle = fill; ctx.fill();
+        for (let j=i+1;j<points.length;j++) {
+          const q = points[j];
+          const dx=p.x-q.x, dy=p.y-q.y, d=Math.hypot(dx,dy);
+          if (d < 105) {
+            ctx.globalAlpha = 1 - d/105;
+            ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.strokeStyle=stroke; ctx.stroke();
+          }
+        }
+        ctx.globalAlpha = 1;
+      });
+      requestAnimationFrame(drawField);
+    }
+    addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    drawField();
+
+    // Research-specific ambient field. It combines four visual motifs from the work:
+    // optimization contours, expert routing, low-rank memory atoms, and orthogonal updates.
+    const ambient = document.getElementById('ambientBg');
+    const ambientCtx = ambient.getContext('2d');
+    let ambientDpr = Math.min(devicePixelRatio || 1, 1.65);
+    let ambientW = 0, ambientH = 0;
+    let pointerX = .5, pointerY = .5;
+    let lastAmbientFrame = 0;
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ambientNodes = Array.from({length: 36}, (_,i) => ({
+      phase: i * 1.71,
+      lane: (i % 9) / 8,
+      speed: .000026 + (i % 7) * .000006,
+      square: i % 4 === 0
+    }));
+
+    addEventListener('pointermove', e => {
+      pointerX = e.clientX / Math.max(1, innerWidth);
+      pointerY = e.clientY / Math.max(1, innerHeight);
+    }, {passive:true});
+
+    function resizeAmbient() {
+      ambientW = innerWidth; ambientH = innerHeight;
+      ambient.width = Math.floor(ambientW * ambientDpr);
+      ambient.height = Math.floor(ambientH * ambientDpr);
+      ambient.style.width = ambientW + 'px'; ambient.style.height = ambientH + 'px';
+      ambientCtx.setTransform(ambientDpr,0,0,ambientDpr,0,0);
+    }
+
+    function ambientDot(x,y,r,fill, square=false) {
+      ambientCtx.fillStyle = fill;
+      if (square) {
+        ambientCtx.beginPath();
+        ambientCtx.roundRect(x-r,y-r,r*2,r*2,Math.max(1,r*.35));
+        ambientCtx.fill();
+      } else {
+        ambientCtx.beginPath(); ambientCtx.arc(x,y,r,0,Math.PI*2); ambientCtx.fill();
+      }
+    }
+
+    function drawGlow(x,y,r,colorInner,colorOuter) {
+      const g = ambientCtx.createRadialGradient(x,y,0,x,y,r);
+      g.addColorStop(0,colorInner); g.addColorStop(1,colorOuter);
+      ambientCtx.fillStyle = g;
+      ambientCtx.beginPath(); ambientCtx.arc(x,y,r,0,Math.PI*2); ambientCtx.fill();
+    }
+
+    function drawAmbient(now=0) {
+      if (reduceMotion && lastAmbientFrame) return;
+      lastAmbientFrame = now;
+      ambientCtx.clearRect(0,0,ambientW,ambientH);
+      const dark = body.classList.contains('dark');
+      const scrollPhase = scrollY * .0016;
+      const px = (pointerX-.5)*22, py=(pointerY-.5)*16;
+      const ink = dark ? 'rgba(242,238,229,.085)' : 'rgba(21,22,23,.060)';
+      const orange = dark ? 'rgba(225,111,28,.31)' : 'rgba(191,87,0,.17)';
+      const blue = dark ? 'rgba(86,127,220,.25)' : 'rgba(49,93,182,.14)';
+      const green = dark ? 'rgba(54,166,134,.24)' : 'rgba(22,132,103,.13)';
+      const red = dark ? 'rgba(208,91,74,.16)' : 'rgba(178,76,62,.09)';
+
+      ambientCtx.save();
+      ambientCtx.globalCompositeOperation = dark ? 'screen' : 'multiply';
+      drawGlow(ambientW*(.13 + .035*Math.sin(now*.00012))+px, ambientH*(.18 + .03*Math.cos(now*.00010))+py, Math.min(ambientW,ambientH)*.30,
+        dark ? 'rgba(191,87,0,.055)' : 'rgba(191,87,0,.028)', 'rgba(191,87,0,0)');
+      drawGlow(ambientW*(.87 + .035*Math.cos(now*.00009))-px, ambientH*(.30 + .04*Math.sin(now*.00011))-py, Math.min(ambientW,ambientH)*.34,
+        dark ? 'rgba(49,93,182,.050)' : 'rgba(49,93,182,.024)', 'rgba(49,93,182,0)');
+      ambientCtx.restore();
+
+      // Optimization landscape: a moving family of contours.
+      ambientCtx.lineWidth = 1;
+      for (let k=0;k<11;k++) {
+        ambientCtx.beginPath();
+        for (let x=-40;x<=ambientW+40;x+=14) {
+          const yy = ambientH*(.04+k*.092)
+            + Math.sin(x*.0055 + k*.64 + now*.00013 + scrollPhase)*25
+            + Math.sin(x*.013 - now*.00007 + k*.24)*8
+            + py*.22;
+          x===-40 ? ambientCtx.moveTo(x,yy) : ambientCtx.lineTo(x,yy);
+        }
+        ambientCtx.strokeStyle = k===2 || k===8 ? orange : (k===5 ? green : ink);
+        ambientCtx.lineWidth = (k===2 || k===8) ? 1.15 : .8;
+        ambientCtx.stroke();
+      }
+
+      // Compass: rotating orthogonal update and gradient direction.
+      const cx = ambientW*.84 + px*.42, cy = ambientH*.17 + py*.35;
+      const a = -.55 + Math.sin(now*.00034)*.28;
+      const len = Math.min(ambientW,ambientH)*.13;
+      ambientCtx.save(); ambientCtx.translate(cx,cy); ambientCtx.rotate(a);
+      ambientCtx.beginPath(); ambientCtx.arc(0,0,len*.72,-.55,.55); ambientCtx.strokeStyle=ink; ambientCtx.lineWidth=1; ambientCtx.stroke();
+      ambientCtx.beginPath(); ambientCtx.moveTo(-len*.15,0); ambientCtx.lineTo(len,0); ambientCtx.strokeStyle=green; ambientCtx.lineWidth=1.7; ambientCtx.stroke();
+      ambientCtx.beginPath(); ambientCtx.moveTo(0,-len*.72); ambientCtx.lineTo(0,len*.58); ambientCtx.strokeStyle=orange; ambientCtx.lineWidth=1.3; ambientCtx.stroke();
+      ambientDot(len,0,2.5,green); ambientDot(0,-len*.72,2.1,orange);
+      ambientCtx.restore();
+
+      // A small expert field. Packets move from a shared source to active experts.
+      const ex = 42 + px*.25, ey = ambientH*.63 + py*.30;
+      const cols=4, rows=4, gap=22;
+      for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) {
+        const idx=r*cols+c;
+        const hot=(Math.floor(now/1100)+idx*3)%11===0 || (Math.floor(now/1450)+idx)%13===0;
+        ambientDot(ex+c*gap,ey+r*gap,hot?3.1:2.0,hot?orange:ink,true);
+      }
+      const sourceX=ex-42, sourceY=ey+gap*1.5;
+      ambientDot(sourceX,sourceY,3.1,blue);
+      for(let j=0;j<3;j++) {
+        const idx=(Math.floor(now/1300)+j*5)%16;
+        const tx=ex+(idx%4)*gap, ty=ey+Math.floor(idx/4)*gap;
+        ambientCtx.beginPath(); ambientCtx.moveTo(sourceX,sourceY); ambientCtx.quadraticCurveTo(sourceX+30, sourceY+(ty-sourceY)*.25, tx,ty);
+        ambientCtx.strokeStyle = j===0 ? blue : ink; ambientCtx.lineWidth=.85; ambientCtx.stroke();
+        const u=((now*.00038)+(j*.27))%1;
+        const qx=(1-u)*(1-u)*sourceX + 2*(1-u)*u*(sourceX+30) + u*u*tx;
+        const qy=(1-u)*(1-u)*sourceY + 2*(1-u)*u*(sourceY+(ty-sourceY)*.25) + u*u*ty;
+        ambientDot(qx,qy,1.8,j===0?blue:orange);
+      }
+
+      // Shared low-rank memory: atoms drift on a curved track near the lower-right edge.
+      for(let i=0;i<8;i++) {
+        const u=((now*.000030)+i/8)%1;
+        const x=ambientW*(.58+.37*u) + Math.sin(i*1.7+now*.00024)*5 - px*.25;
+        const y=ambientH*(.78 + .055*Math.sin(u*Math.PI*2 + now*.00015)) - py*.22;
+        ambientDot(x,y,2.5,i%3===0?orange:(i%3===1?green:blue),true);
+      }
+
+      // Moving particles that connect the whole field.
+      ambientNodes.forEach((n,i) => {
+        const x = ((now*n.speed*ambientW + n.phase*117 + scrollY*.045) % (ambientW+140)) - 70;
+        const y = ambientH*(.09 + n.lane*.82) + Math.sin(now*.00032+n.phase)*18;
+        const col = i%9===0 ? orange : (i%7===0 ? blue : (i%11===0 ? green : ink));
+        ambientDot(x,y,i%5===0?2.0:1.15,col,n.square);
+      });
+
+      // Sparse causal chain in the lower-left, deliberately low contrast.
+      const gx=ambientW*.13+px*.18, gy=ambientH*.88+py*.16;
+      const graph=[[0,0],[46,-34],[95,-10],[58,32],[126,40]];
+      const edges=[[0,1],[0,3],[1,2],[1,3],[2,3],[3,4]];
+      edges.forEach(([i,j],ei)=>{
+        ambientCtx.beginPath(); ambientCtx.moveTo(gx+graph[i][0],gy+graph[i][1]); ambientCtx.lineTo(gx+graph[j][0],gy+graph[j][1]);
+        ambientCtx.strokeStyle=ei%3===0?red:ink; ambientCtx.lineWidth=.8; ambientCtx.stroke();
+      });
+      graph.forEach((p,i)=>ambientDot(gx+p[0],gy+p[1],i===3?3.1:2.1,i===3?green:ink));
+
+      if (!reduceMotion) requestAnimationFrame(drawAmbient);
+    }
+    resizeAmbient();
+    addEventListener('resize', resizeAmbient);
+    requestAnimationFrame(drawAmbient);
+
+    // Typewriter: four live questions tied directly to current work.
+    const typedNode = document.getElementById('researchTyped');
+    const researchQuestions = [
+      'How should an optimizer update experts that receive different learning signals?',
+      'Can model state determine which low-rank update to retrieve?',
+      'How should an optimizer adapt to experts receiving different learning signals?',
+      'When several causal answers are valid, what should a verifier check?'
+    ];
+    let typeQ=0, typeI=0, deleting=false;
+    function typeResearchQuestion() {
+      if (!typedNode) return;
+      const text=researchQuestions[typeQ];
+      if (reduceMotion) { typedNode.textContent=text; return; }
+      typeI += deleting ? -1 : 1;
+      typedNode.textContent=text.slice(0,Math.max(0,typeI));
+      let delay = deleting ? 25 : 34;
+      if (!deleting && typeI>=text.length) { deleting=true; delay=1900; }
+      else if (deleting && typeI<=0) { deleting=false; typeQ=(typeQ+1)%researchQuestions.length; delay=330; }
+      setTimeout(typeResearchQuestion,delay);
+    }
+    typeResearchQuestion();
+
+    // Each project has its own small animated research diagram.
+    const projectCanvases = [...document.querySelectorAll('.project-viz')];
+    const vizState = new WeakMap();
+    const colors = () => {
+      const cs = getComputedStyle(body);
+      return {
+        ink: cs.getPropertyValue('--ink').trim(), muted: cs.getPropertyValue('--muted').trim(),
+        orange: cs.getPropertyValue('--orange').trim(), blue: cs.getPropertyValue('--blue').trim(),
+        green: cs.getPropertyValue('--green').trim(), red: cs.getPropertyValue('--red').trim(),
+        surface: cs.getPropertyValue('--surface-strong').trim(), hair: cs.getPropertyValue('--hair-strong').trim()
+      };
+    };
+    function prepareProjectCanvas(c) {
+      const rect = c.getBoundingClientRect();
+      const pd = Math.min(devicePixelRatio || 1, 2);
+      const w = Math.max(1, rect.width), h = Math.max(1, rect.height);
+      if (c.width !== Math.round(w*pd) || c.height !== Math.round(h*pd)) {
+        c.width = Math.round(w*pd); c.height = Math.round(h*pd);
+        c.getContext('2d').setTransform(pd,0,0,pd,0,0);
+      }
+      return [c.getContext('2d'),w,h];
+    }
+    function line(ctx,x1,y1,x2,y2,col,w=1) { ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.strokeStyle=col; ctx.lineWidth=w; ctx.stroke(); }
+    function dot(ctx,x,y,r,col) { ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fillStyle=col; ctx.fill(); }
+    function rounded(ctx,x,y,w,h,r,col,stroke=null) { ctx.beginPath(); ctx.roundRect(x,y,w,h,r); ctx.fillStyle=col; ctx.fill(); if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();} }
+
+    function drawLora(ctx,w,h,t,c) {
+      const qx=28, qy=h*.42; rounded(ctx,qx-13,qy-13,26,26,8,c.surface,c.hair); dot(ctx,qx,qy,3,c.orange);
+      const xs=[78,108,138,168], ys=[55,88,121,154];
+      xs.forEach((x,i)=>{ rounded(ctx,x-11,ys[i]-11,22,22,6,c.surface,c.hair); });
+      const k=Math.floor(t/850)%4; rounded(ctx,xs[k]-11,ys[k]-11,22,22,6,'rgba(22,132,103,.19)',c.green);
+      line(ctx,qx+14,qy,xs[k]-14,ys[k],c.orange,1.4); dot(ctx,qx+14+(xs[k]-qx-28)*((t%850)/850),qy+(ys[k]-qy)*((t%850)/850),2.3,c.orange);
+      line(ctx,178,104,184,104,c.hair,1); line(ctx,181,101,184,104,c.hair,1);
+    }
+    function drawCalver(ctx,w,h,t,c) {
+      const nodes=[[36,48],[72,34],[102,66],[60,92],[120,112]];
+      [[0,1],[1,2],[0,3],[1,3],[2,3],[3,4]].forEach(([a,b])=>line(ctx,...nodes[a],...nodes[b],c.hair,1.1));
+      nodes.forEach((p,i)=>{dot(ctx,p[0],p[1],8,c.surface); ctx.strokeStyle=c.green; ctx.lineWidth=1; ctx.beginPath();ctx.arc(p[0],p[1],8,0,Math.PI*2);ctx.stroke();});
+      const bx=137, startY=38; for(let r=0;r<4;r++){ for(let j=0;j<5;j++){ const pass=((r*3+j)%5)!==1; rounded(ctx,bx+j*8,startY+r*24,5,5,1,pass?c.ink:c.surface,c.hair); } }
+      const r=Math.floor(t/1000)%4; rounded(ctx,bx-6,startY-6+r*24,52,17,6,'rgba(22,132,103,.12)',c.green);
+      dot(ctx,124,38+r*24,2.6,c.orange);
+    }
+    function drawCompass(ctx,w,h,t,c) {
+      const cx=w*.5,cy=h*.49; ctx.save(); ctx.translate(cx,cy);
+      const ang=-.75+Math.sin(t*.001)*.16;
+      for(let i=0;i<5;i++){ const a=i*Math.PI*2/5+.25; line(ctx,0,0,Math.cos(a)*58,Math.sin(a)*58,c.hair,1); dot(ctx,Math.cos(a)*58,Math.sin(a)*58,4,i===2?c.orange:c.surface); }
+      ctx.rotate(ang); line(ctx,0,0,72,0,c.green,2.2); line(ctx,67,-4,72,0,c.green,2); line(ctx,67,4,72,0,c.green,2); ctx.restore();
+      const pulse=(t%1200)/1200; dot(ctx,cx+Math.cos(ang)*72*pulse,cy+Math.sin(ang)*72*pulse,2.5,c.orange);
+    }
+    function drawMoeOpt(ctx,w,h,t,c) {
+      const cols=3, rows=3;
+      const left=28, top=38, gapX=54, gapY=46;
+      for(let r=0;r<rows;r++){
+        for(let col=0;col<cols;col++){
+          const x=left+col*gapX, y=top+r*gapY;
+          const active=((Math.floor(t/700)+r*2+col)%5===0);
+          rounded(ctx,x-14,y-11,28,22,6,active?'rgba(191,87,0,.16)':c.surface,active?c.orange:c.hair);
+          dot(ctx,x,y,2.4,active?c.orange:c.ink);
+        }
+      }
+      const phase=(t*.00032)%1;
+      const sx=16, sy=92;
+      for(let k=0;k<4;k++){
+        const targetCol=(k+1)%3, targetRow=(k*2)%3;
+        const tx=left+targetCol*gapX, ty=top+targetRow*gapY;
+        const u=(phase+k*.23)%1;
+        const x=sx+(tx-sx)*u, y=sy+(ty-sy)*u;
+        dot(ctx,x,y,3,k%2?c.green:c.orange);
+      }
+      line(ctx,12,92,22,92,c.hair,1.2);
+      ctx.fillStyle=c.muted; ctx.font='9px ui-monospace'; ctx.fillText('router',10,79);
+    }
+
+    function drawMoeCluster(ctx,w,h,t,c) {
+      const seed=(i)=>{ const x=Math.sin(i*999)*43758.5; return x-Math.floor(x); };
+      for(let i=0;i<42;i++){
+        const group=i%2, cx=group?125:65, cy=group?72:118;
+        const a=seed(i*3)*Math.PI*2, rr=12+seed(i*7)*33; const drift=Math.sin(t*.00055+i)*2;
+        dot(ctx,cx+Math.cos(a)*rr+drift,cy+Math.sin(a)*rr,2.1,group?c.orange:c.blue);
+      }
+      line(ctx,30,155,164,155,c.hair,1); line(ctx,30,155,30,28,c.hair,1);
+    }
+    function drawOstc(ctx,w,h,t,c) {
+      const phase=(t*.06)%38; for(let i=0;i<5;i++){ const x=18+i*36-phase; if(x<-25||x>w) continue; rounded(ctx,x,42,30,50,5,c.surface,c.hair); const fill=i<2?c.blue:(i<4?c.orange:c.green); rounded(ctx,x+5,48,20,28,4,fill); line(ctx,x+5,82,x+25,82,c.hair,1); }
+      line(ctx,20,112,170,112,c.hair,1); ctx.beginPath(); for(let x=20;x<170;x+=3){ const y=112+Math.sin(x*.10+t*.004)*8*Math.exp(-(x-95)*(x-95)/5000); x===20?ctx.moveTo(x,y):ctx.lineTo(x,y);} ctx.strokeStyle=c.green;ctx.lineWidth=1.5;ctx.stroke();
+      ['BG','IN','END'].forEach((s,i)=>{ rounded(ctx,30+i*48,142,38,18,5,i===Math.floor(t/1300)%3?'rgba(191,87,0,.16)':c.surface,i===Math.floor(t/1300)%3?c.orange:c.hair); ctx.fillStyle=c.muted;ctx.font='8px ui-monospace';ctx.fillText(s,41+i*48,154); });
+    }
+    function drawGP(ctx,w,h,t,c) {
+      ctx.beginPath(); for(let x=18;x<172;x+=2){ const y=100-28*Math.sin(x*.045)-8*Math.sin(x*.11); x===18?ctx.moveTo(x,y):ctx.lineTo(x,y);} ctx.strokeStyle=c.blue;ctx.lineWidth=1.5;ctx.stroke();
+      for(let i=0;i<8;i++){ const x=24+i*20; const y=100-28*Math.sin(x*.045)-8*Math.sin(x*.11); line(ctx,x,y-16,x,y+16,'rgba(49,93,182,.16)',3); }
+      for(let i=0;i<7;i++){ const ph=(t*.00045+i*.14)%1; const x=24+ph*140; const mean=100-28*Math.sin(x*.045)-8*Math.sin(x*.11); dot(ctx,x,mean+Math.sin(t*.001+i)*12,2.8,i===0?c.orange:c.ink); }
+    }
+    function drawHmc(ctx,w,h,t,c) {
+      ctx.beginPath(); for(let x=16;x<174;x+=2){ const y=146-52*Math.exp(-((x-95)**2)/2800)+16*Math.sin(x*.045); x===16?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.strokeStyle=c.hair;ctx.lineWidth=1.2;ctx.stroke();
+      for(let i=0;i<9;i++){ const a=t*.0011+i*.66; const r=55-i*2.5; const x=95+Math.cos(a)*r*.72; const y=94+Math.sin(a)*r*.38; dot(ctx,x,y,2.7,i===0?c.orange:c.ink); }
+      ctx.beginPath();ctx.ellipse(95,94,50,30,0,0,Math.PI*2);ctx.strokeStyle='rgba(191,87,0,.22)';ctx.stroke();
+    }
+    function drawSde(ctx,w,h,t,c) {
+      line(ctx,18,150,174,150,c.hair,1); line(ctx,18,150,18,30,c.hair,1);
+      ctx.beginPath(); for(let i=0;i<110;i++){ const x=20+i*1.4; const y=95 + 24*Math.sin(i*.11+t*.0006) + 13*Math.sin(i*.39+1.7) + 5*Math.sin(i*.97); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);} ctx.strokeStyle=c.blue;ctx.lineWidth=1.5;ctx.stroke();
+      for(let i=0;i<5;i++){ const x=45+i*27; dot(ctx,x,95+24*Math.sin((x-20)/1.4*.11+t*.0006)+13*Math.sin((x-20)/1.4*.39+1.7)+5*Math.sin((x-20)/1.4*.97),3,i%2?c.orange:c.green); }
+    }
+    function drawLie(ctx,w,h,t,c) {
+      const cx=94,cy=95,ang=t*.0007; ctx.save();ctx.translate(cx,cy);ctx.rotate(ang*.35);
+      line(ctx,0,0,58,0,c.orange,1.6); line(ctx,0,0,-24,48,c.blue,1.6); line(ctx,0,0,-30,-42,c.green,1.6);
+      ctx.beginPath();ctx.ellipse(0,0,64,31,ang*.25,0,Math.PI*2);ctx.strokeStyle=c.hair;ctx.stroke();
+      dot(ctx,Math.cos(ang)*64,Math.sin(ang)*31,4,c.orange); ctx.restore();
+      ctx.beginPath();ctx.arc(cx,cy,22,0,Math.PI*2);ctx.strokeStyle='rgba(49,93,182,.22)';ctx.stroke();
+    }
+    function drawSchrodinger(ctx,w,h,t,c) {
+      rounded(ctx,22,38,146,112,8,'rgba(255,255,255,0)',c.hair); const phase=t*.0025;
+      ctx.beginPath(); for(let x=24;x<166;x+=2){ const u=(x-24)/142; const y=95-36*Math.sin(Math.PI*u)*Math.cos(phase); x===24?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.strokeStyle=c.blue;ctx.lineWidth=2;ctx.stroke();
+      for(let i=0;i<6;i++){ const u=(i+1)/7; const x=24+u*142; const y=95-36*Math.sin(Math.PI*u)*Math.cos(phase); dot(ctx,x,y,2.5,i===Math.floor((t/900)%6)?c.orange:c.ink); }
+    }
+    function drawIsro(ctx,w,h,t,c) {
+      const x0=26,y0=34,sz=136; rounded(ctx,x0,y0,sz,sz,8,c.surface,c.hair);
+      for(let i=0;i<7;i++){ for(let j=0;j<7;j++){ const v=Math.sin(i*2.1+j*1.7)>0; ctx.fillStyle=v?'rgba(49,93,182,.12)':'rgba(22,132,103,.10)';ctx.fillRect(x0+3+i*19,y0+3+j*19,17,17); } }
+      const sweep=x0+((t*.04)%sz); ctx.save();ctx.beginPath();ctx.rect(x0,y0,Math.max(0,sweep-x0),sz);ctx.clip();
+      ctx.beginPath();ctx.moveTo(42,118);ctx.bezierCurveTo(70,82,92,135,144,69);ctx.lineTo(153,97);ctx.bezierCurveTo(105,145,73,102,49,139);ctx.closePath();ctx.fillStyle='rgba(191,87,0,.35)';ctx.fill();ctx.restore();
+      line(ctx,sweep,y0,sweep,y0+sz,c.orange,1.3);
+    }
+    function drawPortfolio(ctx,w,h,t,c) {
+      const left=28, right=w-20, bottom=h-28, top=28;
+      line(ctx,left,bottom,right,bottom,c.hair,1);
+      line(ctx,left,bottom,left,top,c.hair,1);
+
+      // A cloud of feasible portfolios generated by different factor exposures.
+      for(let i=0;i<24;i++){
+        const u=(i+1)/25;
+        const x=left+20+u*(right-left-32);
+        const frontierY=bottom-18-78*Math.sqrt(u);
+        const spread=16+18*(1-u);
+        const y=frontierY+((Math.sin(i*2.17)*.5+.5)*spread);
+        dot(ctx,x,y,1.7,i%4===0?c.blue:c.muted);
+      }
+
+      // Efficient frontier.
+      ctx.beginPath();
+      for(let j=0;j<=70;j++){
+        const u=j/70;
+        const x=left+18+u*(right-left-28);
+        const y=bottom-18-78*Math.sqrt(u);
+        j===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle=c.green;ctx.lineWidth=1.8;ctx.stroke();
+
+      // Bayesian estimate moves along the frontier as posterior factor weights update.
+      const q=.20+.66*(.5+.5*Math.sin(t*.00075));
+      const px=left+18+q*(right-left-28);
+      const py=bottom-18-78*Math.sqrt(q);
+      dot(ctx,px,py,4.4,c.orange);
+      ctx.beginPath();ctx.arc(px,py,8+3*Math.sin(t*.002),0,Math.PI*2);ctx.strokeStyle='rgba(191,87,0,.28)';ctx.lineWidth=1;ctx.stroke();
+
+      // Factor signals feeding the posterior estimate.
+      const fy=top+10;
+      [c.orange,c.blue,c.green].forEach((col,i)=>{
+        const fx=left+20+i*30;
+        rounded(ctx,fx,fy,20,9,4,c.surface,c.hair);
+        const pulse=((t*.00045)+i*.29)%1;
+        dot(ctx,fx+10,fy+4.5,2.1,col);
+        line(ctx,fx+20,fy+4.5,px,py,col===c.orange?'rgba(191,87,0,.16)':c.hair,.7);
+        const sx=fx+20+(px-(fx+20))*pulse, sy=fy+4.5+(py-(fy+4.5))*pulse;
+        dot(ctx,sx,sy,1.5,col);
+      });
+      ctx.fillStyle=c.muted;ctx.font='8px ui-monospace';ctx.fillText('risk',right-23,bottom+13);ctx.fillText('return',4,top+2);
+    }
+    const drawers={lora:drawLora,calver:drawCalver,moeopt:drawMoeOpt,compass:drawCompass,moecluster:drawMoeCluster,ostc:drawOstc,gp:drawGP,hmc:drawHmc,sde:drawSde,lie:drawLie,schrodinger:drawSchrodinger,isro:drawIsro,portfolio:drawPortfolio};
+    function drawProjectVisuals(t=0){
+      const cc=colors();
+      projectCanvases.forEach(c=>{ const [cx,w,h]=prepareProjectCanvas(c); cx.clearRect(0,0,w,h); const fn=drawers[c.dataset.viz]; if(fn) fn(cx,w,h,t,cc); });
+      requestAnimationFrame(drawProjectVisuals);
+    }
+    requestAnimationFrame(drawProjectVisuals);
+
+  </script>
+</body>
+</html>

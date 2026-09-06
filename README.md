@@ -1,2 +1,2 @@
 Website.
-Hello, a warm welcome!
+Hello, welcome!
